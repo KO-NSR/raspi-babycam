@@ -1,27 +1,27 @@
-# # ./LCD1602I2C/LCD.pyのインポート
-# import sys
-# sys.path.append('/home/nsrns50f/projects')
-# from LCD1602I2C.LCD import LCD
-# import time
- 
-# lcd = LCD(2,0x27,True)
- 
-# lcd.message("Hello World!", 1)
-# lcd.message("test2", 2)
- 
-# time.sleep(5)
-# lcd.clear()
-
-
-# from LCD1602I2Cmod.LCD import LCD
-import sys
-sys.path.append('/home/nsrns50f/projects')
-from LCD1602I2C.JLCD import JLCD as LCD
 import time
+import sys
+sys.path.append('/home/nsrns50f/projects/babyCameraWithRaspi/')
+from LCD1602I2C.JLCD import JLCD as LCD
+from dht11_reader import DHT11Reader
 
+reader = DHT11Reader(pin=4)
 lcd = LCD(2,0x27,True)
-lcd.message("temp:",1)
-lcd.message("23:00$$%",2)
 
-time.sleep(5)
-lcd.clear()
+try:
+    while True:
+        data = reader.read()
+        if data:
+            print(f"Time: {data['timestamp']}")
+            print(f"Temperature: {data['temperature']:.1f}°C")
+            print(f"Humidity: {data['humidity']:.1f}%")
+            lcd.message(f"Temp: {data['temperature']:.1f}°C",1)
+            lcd.message(f"Hum: {data['humidity']:.1f}%",2)
+        else:
+            print("データ取得に失敗しました")
+        time.sleep(6)
+except KeyboardInterrupt:
+    lcd.clear()
+    print("終了処理中...")
+    import RPi.GPIO as GPIO
+    GPIO.cleanup()
+
