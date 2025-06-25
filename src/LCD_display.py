@@ -14,8 +14,8 @@ try:
             print(f"Time: {data['timestamp']}")
             print(f"Temperature: {data['temperature']:.1f}°C")
             print(f"Humidity: {data['humidity']:.1f}%")
-            lcd.message(f"Temp: {data['temperature']:.1f}°C",1)
-            lcd.message(f"Hum: {data['humidity']:.1f}%",2)
+            lcd.message(f"Temp: {data['temperature']:.1f}゜C",1)
+            lcd.message(f"Humi: {data['humidity']:.1f}%",2)
         else:
             print("データ取得に失敗しました")
         time.sleep(6)
