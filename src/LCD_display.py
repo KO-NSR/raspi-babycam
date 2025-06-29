@@ -1,6 +1,9 @@
 import time
+import os
 import sys
-sys.path.append('/home/nsrns50f/projects/babyCameraWithRaspi/')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(base_dir)
+sys.path.append(parent_dir)
 from LCD1602I2C.JLCD import JLCD as LCD
 from dht11_reader import DHT11Reader
 

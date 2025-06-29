@@ -1,8 +1,7 @@
-import sys
-sys.path.append('/home/nsrns50f/projects/babyCameraWithRaspi/src')
-from dht11_reader import DHT11Reader
 import time
 import os
+import sys
+from dht11_reader import DHT11Reader
 
 DATA_DIR = "/var/www/html/data"
 TEMP_FILE = os.path.join(DATA_DIR, "temp.txt")
