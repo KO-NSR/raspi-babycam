@@ -14,8 +14,20 @@ if [ -f py_requirements.txt ]; then
     pip3 install -r py_requirements.txt
 fi
 
-# === 3. systemd .service ファイルを2つ自動生成 ===
+# === 3 データファイルの作成とパーミッション設定 ===
 USER_NAME=$(whoami)
+DATA_DIR="/var/www/html/data"
+sudo mkdir -p "$DATA_DIR"
+
+for FILE in temp.txt humi.txt; do
+    FILE_PATH="$DATA_DIR/$FILE"
+    echo "📝 Creating $FILE_PATH..."
+    sudo touch "$FILE_PATH"
+    sudo chown "$USER_NAME":www-data "$FILE_PATH"
+    sudo chmod 664 "$FILE_PATH"
+done
+
+# === 4. systemd .service ファイルを自動生成 ===
 WORK_DIR=$(pwd)
 
 declare -A SERVICES=(
@@ -46,7 +58,7 @@ WantedBy=multi-user.target
 EOF
 done
 
-# === 4. サービスを登録・起動 ===
+# === 5. サービスを登録・起動 ===
 sudo systemctl daemon-reload
 for SERVICE in "${!SERVICES[@]}"; do
   sudo systemctl enable "$SERVICE"
